@@ -1,11 +1,11 @@
+import { useEffect } from "react";
 import TextInput from "@/Components/TextInput";
 import InputLabel from "@/Components/InputLabel";
 import Button from "@/Components/Button";
-import { Link, Head, useForm } from "@inertiajs/react";
-import { useEffect } from "react";
 import InputError from "@/Components/InputError";
+import { Link, Head, useForm } from "@inertiajs/react";
 
-export default function Login() {
+export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         email: "",
