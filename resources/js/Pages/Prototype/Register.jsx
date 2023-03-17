@@ -3,7 +3,7 @@ import InputLabel from "@/Components/InputLabel";
 import Button from "@/Components/Button";
 import { Link, Head } from "@inertiajs/react";
 
-export default function Login() {
+export default function Register() {
     return (
         <>
             <Head title="Sign up"></Head>

@@ -21,5 +21,11 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('googleplaystore'),
         ])->assignRole('admin');
+
+        User::create([
+            'name' => 'Farhan Jiratullah',
+            'email' => 'farhanjiratullah794@gmail.com',
+            'password' => Hash::make('googleplaystore'),
+        ])->assignRole('user');
     }
 }
