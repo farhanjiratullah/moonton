@@ -50,9 +50,7 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function () {
-                if( !this->user_subscription_paid ) {
-                    return false;
-                }
+                if( !$this->user_subscription_paid ) return false;
 
                 return now()->lessThanOrEqualTo($this->user_subscription_paid->expired_date);
             },
