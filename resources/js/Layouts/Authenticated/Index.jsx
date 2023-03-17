@@ -7,7 +7,7 @@ export default function Authenticated({ auth, children }) {
             {/* Desktop Only */}
             <div className="mx-auto max-w-screen hidden lg:block">
                 {/* Start Sidebar */}
-                <Sidebar></Sidebar>
+                <Sidebar auth={auth}></Sidebar>
                 {/* End Sidebar */}
 
                 {/* Start Content */}

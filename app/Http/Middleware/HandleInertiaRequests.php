@@ -33,6 +33,7 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
+                'active_plan' => $this->active_plan()
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
@@ -40,5 +41,21 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
         ]);
+    }
+
+    private function active_plan() {
+        $active_plan = auth()->user()->user_subscription_paid ?? null;
+
+        if( !$active_plan ) return null;
+
+        $last_day = $active_plan->updated_at->addMonths($active_plan->subscription_plan->active_period_in_months);
+        $active_days = $active_plan->updated_at->diffInDays($last_day);
+        $remaining_active_days = $active_plan->expired_date->diffInDays(now());
+
+        return [
+            'name' => $active_plan->subscription_plan->name,
+            'active_days' => $active_days,
+            'remaining_active_days' => $remaining_active_days,
+        ];
     }
 }
