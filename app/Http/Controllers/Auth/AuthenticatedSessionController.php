@@ -34,6 +34,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if( auth()->user()->hasRole('admin') ) {
+            return to_route('admin.dashboard.movies.index');
+        }
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

@@ -17,6 +17,9 @@ const TextInput = forwardRef(function TextInput(
         variant = "primary",
         placeholder,
         isError,
+        step,
+        min,
+        max,
     },
     ref
 ) {
@@ -44,13 +47,23 @@ const TextInput = forwardRef(function TextInput(
                 onChange={(e) => handleChange(e)}
                 defaultValue={defaultValue}
                 placeholder={placeholder}
+                step={step}
+                min={min}
+                max={max}
             />
         </div>
     );
 });
 
 TextInput.propTypes = {
-    type: PropTypes.oneOf(["text", "email", "password", "number", "file"]),
+    type: PropTypes.oneOf([
+        "text",
+        "email",
+        "password",
+        "number",
+        "file",
+        "url",
+    ]),
     name: PropTypes.string,
     id: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -63,6 +76,9 @@ TextInput.propTypes = {
     variant: PropTypes.oneOf(["primary", "error", "primary-outline"]),
     placeholder: PropTypes.string,
     isError: PropTypes.bool,
+    step: PropTypes.string,
+    min: PropTypes.string,
+    max: PropTypes.string,
 };
 
 export default TextInput;
