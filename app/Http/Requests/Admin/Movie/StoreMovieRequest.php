@@ -24,8 +24,8 @@ class StoreMovieRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:movies,name',
-            'slug' => 'required|string',
+            'name' => 'required|string',
+            'slug' => 'required|string|unique:movies,slug',
             'category' => 'required|string',
             'video_url' => 'required|url',
             'thumbnail' => 'required|image',
@@ -37,7 +37,8 @@ class StoreMovieRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'slug' => str($this->name)->slug()->toString()
+            'slug' => str($this->name)->slug()->toString(),
+            'is_featured' => $this->is_featured == 1 ? true : false
         ]);
     }
 }
