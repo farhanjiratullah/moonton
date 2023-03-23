@@ -20,7 +20,7 @@ class MovieController extends Controller
      */
     public function index(): Response
     {
-        $movies = Movie::all();
+        $movies = Movie::withTrashed()->get();
 
         return inertia('Admin/Movie/Index', [
             'movies' => $movies
@@ -43,7 +43,7 @@ class MovieController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMovieRequest $request)
+    public function store(StoreMovieRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
@@ -90,7 +90,7 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMovieRequest $request, Movie $movie)
+    public function update(UpdateMovieRequest $request, Movie $movie): RedirectResponse
     {
         $data = $request->validated();
 
@@ -115,8 +115,23 @@ class MovieController extends Controller
      * @param  \App\Models\Movie  $movie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Movie $movie)
+    public function destroy(Movie $movie): RedirectResponse
     {
-        //
+        $movie->delete();
+
+        return to_route('admin.dashboard.movies.index')->with([
+            'message' => 'Movie has been deleted successfully',
+            'type' => 'success'
+        ]);
+    }
+
+    public function restore($movie)
+    {
+        Movie::whereSlug($movie)->restore();
+
+        return to_route('admin.dashboard.movies.index')->with([
+            'message' => 'Movie has been restored successfully',
+            'type' => 'success'
+        ]);
     }
 }
