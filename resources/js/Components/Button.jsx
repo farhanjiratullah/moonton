@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import "../../css/button.css";
+import { twMerge } from "tailwind-merge";
 
 Button.propTypes = {
     type: PropTypes.oneOf(["button", "submit", "reset"]),
@@ -23,13 +24,17 @@ export default function Button({
     onClick,
     variant = "primary",
 }) {
+    const classes = twMerge(
+        `rounded-2xl py-[13px] text-center w-full btn-${variant} ${
+            processing && "opacity-30"
+        } ${className}`
+    );
+
     return (
         <button
             type={type}
             onClick={onClick}
-            className={`rounded-2xl py-[13px] text-center w-full btn-${variant} ${
-                processing && "opacity-30"
-            } ${className}`}
+            className={classes}
             disabled={processing}
         >
             {children}

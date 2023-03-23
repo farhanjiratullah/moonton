@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\MovieController;
+use App\Http\Controllers\Admin\MovieController as AdminMovieController;
 use App\Http\Controllers\User\SubscriptionPlanController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,13 @@ Route::middleware(['auth', 'role:user'])->prefix('dashboard')->name('user.dashbo
     Route::get('/movie/{movie:slug}', [MovieController::class, 'show'])->name('movie.show')->middleware('check.user.subscription:true');
     Route::get('subscription-plan', [SubscriptionPlanController::class, 'index'])->name('subscription-plan.index')->middleware('check.user.subscription:false');
     Route::post('subscription-plan/{subscription_plan}/subscribe', [SubscriptionPlanController::class, 'subscribe'])->name('subscription-plan.subscribe')->middleware('check.user.subscription:false');
+});
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.dashboard.')->group(function () {
+    Route::put('movies/{movie}/restore', [AdminMovieController::class, 'restore'])->name('movies.restore');
+    Route::resource('movies', AdminMovieController::class)->scoped([
+        'movie' => 'slug'
+    ]);
 });
 
 Route::middleware('auth')->group(function () {
