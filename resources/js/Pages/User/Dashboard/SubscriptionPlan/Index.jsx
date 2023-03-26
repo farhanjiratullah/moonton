@@ -2,19 +2,46 @@ import { Head, router } from "@inertiajs/react";
 import Authenticated from "@/Layouts/Authenticated/Index";
 import SubscriptionCard from "@/Components/SubscriptionCard";
 
-export default function SubscriptionPlan({ auth, subscription_plans }) {
+export default function SubscriptionPlan({ auth, subscription_plans, env }) {
     const selectedSubscription = (id) => {
         router.post(
             route("user.dashboard.subscription-plan.subscribe", {
                 subscription_plan: id,
-            })
+            }),
+            {},
+            {
+                only: ["user_subscription"],
+                onSuccess: ({ props }) => {
+                    onSnapMidtrans(props.user_subscription);
+                },
+            }
         );
+    };
+
+    const onSnapMidtrans = (user_subscription) => {
+        snap.pay(user_subscription.snap_token, {
+            onSuccess: function (result) {
+                router.visit(route("user.dashboard.index"));
+            },
+            // Optional
+            onPending: function (result) {
+                router.visit(route("user.dashboard.index"));
+            },
+            // Optional
+            onError: function (result) {
+                router.visit(route("user.dashboard.index"));
+            },
+        });
     };
 
     return (
         <>
             <Head>
                 <title>Subscription Plan</title>
+                <script
+                    src="https://app.sandbox.midtrans.com/snap/snap.js"
+                    data-client-key={env.client}
+                ></script>
             </Head>
             <Authenticated auth={auth}>
                 {/* <!-- START: Content --> */}

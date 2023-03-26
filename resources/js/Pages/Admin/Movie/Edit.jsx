@@ -1,4 +1,4 @@
-import { Head, useForm, router } from "@inertiajs/react";
+import { Head, useForm, router, usePage } from "@inertiajs/react";
 import Authenticated from "@/Layouts/Authenticated/Index";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -7,9 +7,11 @@ import Checkbox from "@/Components/Checkbox";
 import Button from "@/Components/Button";
 
 export default function Create({ auth, ziggy, movie }) {
-    const { data, setData, processing, errors } = useForm({
+    const { data, setData, processing } = useForm({
         ...movie,
     });
+
+    const { errors } = usePage().props;
 
     const onHandleChange = (event) => {
         setData(
@@ -53,6 +55,7 @@ export default function Create({ auth, ziggy, movie }) {
                     isError={Boolean(errors.name)}
                 ></TextInput>
                 <InputError message={errors.name} className="mt-2"></InputError>
+                <InputError message={errors.slug} className="mt-2"></InputError>
 
                 <InputLabel forInput="category" className="mt-4">
                     Category

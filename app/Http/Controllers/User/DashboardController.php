@@ -12,10 +12,11 @@ class DashboardController extends Controller
     public function index(): Response 
     {
         $movies = Movie::all();
+        $featured_movies = Movie::whereIsFeatured(1)->get();
 
         return inertia('User/Dashboard/Index', [
             'movies' => $movies,
-            'featured_movies' => $movies->filter(fn($movie) => $movie->is_featured),
+            'featured_movies' => $movies->filter(fn($movie) => $movie->is_featured)->values(),
         ]);
     }
 }
