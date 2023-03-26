@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
                 'message' => session('message'),
                 'type' => session('type'),
             ],
+            'env' => config('services.midtrans'),
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),
